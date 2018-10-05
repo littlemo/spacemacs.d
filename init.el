@@ -40,6 +40,10 @@ values."
      (python :variables
              python-test-runner 'pytest
              python-sort-imports-on-save t)
+     (chinese
+      :variables
+      chinese-enable-fcitx t
+      chinese-enable-youdao-dict t)
      html
      helm
      osx
@@ -315,7 +319,13 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  ;; 配置powerline
   (setq ns-use-srgb-colorspace nil)
+
+  ;; 配置 chinese layer
+  (spacemacs//set-monospaced-font "Source Code Pro" "Hiragino Sans GB" 14 16)
+  (spacemacs/set-leader-keys "oy" 'youdao-dictionary-search-at-point+)
+  (spacemacs/set-leader-keys "od" 'find-by-pinyin-dired)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
