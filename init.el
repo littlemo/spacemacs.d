@@ -326,6 +326,9 @@ you should place your code here."
   (spacemacs//set-monospaced-font "Source Code Pro" "Hiragino Sans GB" 14 16)
   (spacemacs/set-leader-keys "oy" 'youdao-dictionary-search-at-point+)
   (spacemacs/set-leader-keys "od" 'find-by-pinyin-dired)
+
+  ;; 配置建绑定
+  (define-key evil-hybrid-state-map (kbd "C-h") 'backward-delete-char-untabify)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
