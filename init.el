@@ -49,6 +49,7 @@ values."
      helm
      osx
      (auto-completion :variables
+                      ;; 让 auto-completion 在提示的时候加上 snippets
                       auto-completion-enable-snippets-in-popup t)
      better-defaults
      emacs-lisp
