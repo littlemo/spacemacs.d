@@ -54,7 +54,18 @@ values."
      emacs-lisp
      git
      markdown
-     ;; org
+     (org :variables
+          org-src-fontify-natively t
+          org-src-tab-acts-natively t
+          org-edit-src-content-indentation 0
+          org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "CANCELED"))
+          org-agenda-files '("~/CloudStation/note/work_diary/org/")
+          org-capture-templates '(("a" "My TODO task format." entry
+                                   (file "todo.org")
+                                   "* TODO %?
+SCHEDULED: %t"))
+          ;; 仅转义 {} 括起来的下标字串
+          org-export-with-sub-superscripts '{})
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
