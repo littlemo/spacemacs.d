@@ -338,6 +338,9 @@ you should place your code here."
   ;; 在evil的visual模式下仅选择时，不添加到系统剪贴板
   (fset 'evil-visual-update-x-selection 'ignore)
 
+  ;; 开启全局 hungry-delete
+  (global-hungry-delete-mode t)
+
   ;; 配置 chinese layer
   (spacemacs//set-monospaced-font "Source Code Pro" "Hiragino Sans GB" 14 16)
   (spacemacs/set-leader-keys "oy" 'youdao-dictionary-search-at-point+)
