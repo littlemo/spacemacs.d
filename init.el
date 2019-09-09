@@ -2,6 +2,7 @@
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
 
+
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
 You should not put any user code in this function besides modifying the variable
@@ -32,6 +33,10 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
+     moore
+     csv
+     vimscript
+     yaml
      javascript
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -45,8 +50,15 @@ values."
       :variables
       chinese-enable-fcitx t
       chinese-enable-youdao-dict t)
+     (ranger :variables
+             ranger-show-preview t
+             ranger-cleanup-eagerly t
+             ranger-ignored-extensions '("pyc" "pyo")
+             ranger-show-literal nil)
      html
-     helm
+     (helm :variables
+           helm-ag-use-agignore t
+           default-tab-width 4)
      osx
      (auto-completion :variables
                       ;; 让 auto-completion 在提示的时候加上 snippets
@@ -55,10 +67,19 @@ values."
      emacs-lisp
      git
      markdown
+     graphviz
+     (plantuml :variables
+               plantuml-default-exec-mode "jar"
+               plantuml-jar-path "~/.spacemacs.d/lib/plantuml.jar")
      (org :variables
           org-src-fontify-natively t
           org-src-tab-acts-natively t
           org-edit-src-content-indentation 0
+          org-startup-with-inline-images nil
+          org-enable-reveal-js-support t
+          org-url-hexify-p nil
+          org-plantuml-jar-path (expand-file-name "~/.spacemacs.d/lib/plantuml.jar")
+          org-reveal-root "/usr/local/lib/node_modules/reveal.js"
           org-todo-keywords '((sequence "TODO" "IN-PROGRESS" "WAITING" "|" "DONE" "CANCELED"))
           org-agenda-files '("~/CloudStation/note/work_diary/org/")
           org-capture-templates '(("a" "My TODO task format." entry
@@ -66,7 +87,26 @@ values."
                                    "* TODO %?
 SCHEDULED: %t"))
           ;; 仅转义 {} 括起来的下标字串
-          org-export-with-sub-superscripts '{})
+          org-export-with-sub-superscripts '{}
+          org-src-lang-modes '(("arduino" . arduino)
+                               ("redis" . redis)
+                               ("php" . php)
+                               ("C" . c)
+                               ("C++" . c++)
+                               ("asymptote" . asy)
+                               ("bash" . sh)
+                               ("beamer" . latex)
+                               ("calc" . fundamental)
+                               ("cpp" . c++)
+                               ("ditaa" . artist)
+                               ("dot" . graphviz-dot)
+                               ("plantuml" . plantuml)
+                               ("elisp" . emacs-lisp)
+                               ("ocaml" . tuareg)
+                               ("screen" . shell-script)
+                               ("shell" . sh)
+                               ("sqlite" . sql))
+          )
      (shell :variables
             shell-default-height 30
             shell-default-position 'bottom)
@@ -78,11 +118,13 @@ SCHEDULED: %t"))
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(
+                                      cnfonts)
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(
+                                    org-projectile)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -265,7 +307,7 @@ values."
    ;; If non nil show the color guide hint for transient state keys. (default t)
    dotspacemacs-show-transient-state-color-guide t
    ;; If non nil unicode symbols are displayed in the mode line. (default t)
-   dotspacemacs-mode-line-unicode-symbols t
+   dotspacemacs-mode-line-unicode-symbols nil
    ;; If non nil smooth scrolling (native-scrolling) is enabled. Smooth
    ;; scrolling overrides the default behavior of Emacs which recenters point
    ;; when it reaches the top or bottom of the screen. (default t)
@@ -347,8 +389,84 @@ you should place your code here."
   (spacemacs/set-leader-keys "oy" 'youdao-dictionary-search-at-point+)
   (spacemacs/set-leader-keys "od" 'find-by-pinyin-dired)
 
+  ;; (pyim-basedict-enable)
+  ;; 在minibuffer中关闭中文输入
+  (setq fcitx-active-evil-states '(insert emacs hybrid)) ; if you use hybrid mode
+  (fcitx-aggressive-setup)
+  (fcitx-prefix-keys-add "M-m") ; M-m is common in Spacemacs
+  (setq-default pyim-english-input-switch-functions
+                '(pyim-probe-dynamic-english
+                  pyim-probe-program-mode))
+  ;; 使用 pupup-el 来绘制选词框
+  (setq pyim-page-tooltip 'popup)
+
   ;; 配置建绑定
   (define-key evil-hybrid-state-map (kbd "C-h") 'backward-delete-char-untabify)
+
+  ;; 配置 org 的 md 输出支持
+  ;;(with-eval-after-load "org"
+    ;;‘(require 'ox-md nil t))
+
+  ;; 设置中文宽度对齐
+  (cnfonts-enable)
+  (cnfonts-set-spacemacs-fallback-fonts)
+
+  ;; 设置环境编码
+  (setenv "LC_ALL" "en_US.UTF-8")
+  (setenv "LANG" "en_US.UTF-8")
+  (setenv "LANGUAGE" "en_US.UTF-8")
+  (setenv "LC_COLLATE" "en_US.UTF-8")
+  (setenv "LC_CTYPE" "en_US.UTF-8")
+  (setenv "LC_MESSAGES" "en_US.UTF-8")
+  (setenv "LC_MONETARY" "en_US.UTF-8")
+  (setenv "LC_NUMERIC" "en_US.UTF-8")
+  (setenv "LC_TIME" "en_US.UTF-8")
+
+  ;; 设置 org-babel
+  (setq org-babel-python-command "python3")
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((dot . t)  ; this line activates dot
+     (plantuml . t)
+     (shell . t)
+     (python . t)
+     (emacs-lisp . t)
+     (js . t)))
+
+  ;; 关闭 pangu 补空格的模式
+  ;;(setq global-pangu-spacing-mode nil)
+
+  ;; 设置 org
+  (with-eval-after-load "org"
+    (require 'ox-reveal) ; enable reveal.js export
+    (setq org-reveal-hlevel 2)
+
+    ;; 开启 org 下的默认模板方式
+    ;; (require 'org-tempo)
+    (setq org-structure-template-alist
+          '(("n" . "notes")
+           ("a" . "export ascii")
+           ("c" . "center")
+           ("C" . "comment")
+           ("e" . "example")
+           ("E" . "export")
+           ("h" . "export html")
+           ("l" . "export latex")
+           ("q" . "quote")
+           ("s" . "src")
+           ("v" . "verse"))
+          )
+    )
+
+  (with-eval-after-load 'python
+    (defun python-shell-completion-native-try ()
+      "Return non-nil if can trigger native completion."
+      (let ((python-shell-completion-native-enable t)
+            (python-shell-completion-native-output-timeout
+             python-shell-completion-native-try-output-timeout))
+        (python-shell-completion-native-get-completions
+         (get-buffer-process (current-buffer))
+         nil "_"))))
   )
 
 ;; Do not write anything past this comment. This is where Emacs will

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: 数组型模型字段验证器
+# contributor: Moore Huang <moore@moorehy.com>
+# key: varray
+# --
+${1:field_name} = validators.Array(items=validators.Proxy(${2:ItemClass}), default=${3:list})  #: ${4:description}

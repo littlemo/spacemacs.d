@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: 数值型模型字段验证器
+# contributor: Moore Huang <moore@moorehy.com>
+# key: vnumber
+# --
+${1:field_name} = validators.Number(${2:allow_null=${3:False}})  #: ${4:description}

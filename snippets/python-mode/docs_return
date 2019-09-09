@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: 返回值说明
+# contributor: Moore Huang <moore@moorehy.com>
+# key: return
+# --
+:return: ${1:description}

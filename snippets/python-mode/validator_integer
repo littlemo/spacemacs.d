@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: 整型模型字段验证器
+# contributor: Moore Huang <moore@moorehy.com>
+# key: vinteger
+# --
+${1:field_name} = validators.Integer(${2:minimum=${3:0}}${4:, allow_null=${5:False}})  #: ${6:description}

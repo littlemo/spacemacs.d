@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: 返回值类型说明
+# contributor: Moore Huang <moore@moorehy.com>
+# key: rtype
+# --
+:rtype: ${1:str}

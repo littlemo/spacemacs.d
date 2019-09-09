@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: 代理型模型字段验证器
+# contributor: Moore Huang <moore@moorehy.com>
+# key: vproxy
+# --
+${1:field_name} = validators.Proxy(${2:ClassName}, default=$2)  #: ${3:description}

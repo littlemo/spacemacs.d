@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: UUID型模型字段验证器
+# contributor: Moore Huang <moore@moorehy.com>
+# key: vuuid
+# --
+${1:_id} = validators.String(format="UUID", default=uuid.uuid4)  #: ${2:description}

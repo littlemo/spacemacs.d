@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: 参数类型说明
+# contributor: Moore Huang <moore@moorehy.com>
+# key: type
+# --
+:type ${1:name}: ${2:str}

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: 日期时间型模型字段验证器
+# contributor: Moore Huang <moore@moorehy.com>
+# key: vdatetime
+# --
+${1:field_name} = validators.FormatDateTime(
+    default=${2:now}, format="${3:%Y-%m-%d %H:%M:%S}")  #: ${4:description}

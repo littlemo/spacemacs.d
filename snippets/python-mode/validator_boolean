@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: 布尔型模型字段验证器
+# contributor: Moore Huang <moore@moorehy.com>
+# key: vboolean
+# --
+${1:field_name} = validators.Boolean(default=${2:False})  #: ${3:description}
